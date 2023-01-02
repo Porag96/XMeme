@@ -1,6 +1,7 @@
 XMeme is a simple backend web application where users can post and see memes.
 
-Scope of work
+#Scope of work:
+
 Created a Backend Server using Spring template with the REST API handlers.
 Implemented support for POST API that can be used to post Memes.
 Implemented support for GET API that can be used to fetch the 100 newest memes posted, including these fields - name, caption and image URLs.
