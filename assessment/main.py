@@ -39,7 +39,7 @@ class XMemeAssessment(TestCase):
         # os.system('mongo Xmeme --eval "db.dropDatabase()"')
         unittest.TestCase.__init__(self, *args, **kwargs)
         # The token for Authorization is subject to change, because it will expire after a specific time
-        self.HEADERS = {"Content-Type": "application/json", "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb3JhZ0BnbWFpbC5jb20iLCJpYXQiOjE2ODM5MjQ0OTgsImV4cCI6MTY4MzkyNTkzOH0.fDs6trjCVBC4jLh19eUIWPNWOhrqsEBJzPq_Ut7Tfjw"} # "X-Firebase-Auth": "INTERNAL_IMPERSONATE_USER_" + str(user),
+        self.HEADERS = {"Content-Type": "application/json", "Authorization": "Bearer <jwt token>"}
         self.localhost = 'http://localhost:8081/api/v1/'
 
         self.SAMPLE_URL = 'https://cwod-assessment-images.s3.ap-south-1.amazonaws.com/images/'
