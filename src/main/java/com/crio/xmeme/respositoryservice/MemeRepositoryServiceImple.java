@@ -83,13 +83,7 @@ public class MemeRepositoryServiceImple implements MemeRepositoryService {
         MemeEntity memeEntity = mongoTemplate.findOne(query, MemeEntity.class);
 
         // If a matching document is found, return true
-        if (memeEntity != null) {
-            return true;
-        }
-
-        // Otherwise, return false
-        return false;
-
+        return memeEntity != null;
     }
     
 }

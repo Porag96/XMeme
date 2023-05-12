@@ -25,7 +25,7 @@ import com.crio.xmeme.services.MemeService;
 @Log4j2
 public class MemeController {
 
-    public static final String MEME_API_ENDPOINT = "api/v1";
+    public static final String MEME_API_ENDPOINT = "/api/v1";
     public static final String MEME_API = "/memes/";
 
     @Autowired
@@ -39,7 +39,7 @@ public class MemeController {
         GetMemeResponse getMemeResponse = memeService.findMemes();
         log.info("getMemes returned {}", getMemeResponse);
 
-        if(getMemeResponse.getMemes().size() > 0){
+        if(!getMemeResponse.getMemes().isEmpty()){
             return ResponseEntity.ok().body(getMemeResponse.getMemes());
         }
         return new ResponseEntity<>(getMemeResponse.getMemes(),HttpStatus.OK);
@@ -56,8 +56,7 @@ public class MemeController {
 
         if( name != null && caption != null && url != null){
             
-            if(memeService.isDuplicate(name, caption, url)){
-
+            if(Boolean.TRUE.equals(memeService.isDuplicate(name, caption, url))){
                 return new ResponseEntity<>("Duplicate Payload!!", HttpStatus.CONFLICT);
             }
                         

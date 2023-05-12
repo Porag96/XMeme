@@ -43,10 +43,7 @@ public class MemeServiceImple implements MemeService {
 
     @Override
     public Boolean isDuplicate(String name, String caption, String url) {
-        if(memeRepositoryService.isDuplicate(name, caption, url)){
-            return true;
-        }
-        return false;
+        return Boolean.TRUE.equals(memeRepositoryService.isDuplicate(name, caption, url));
     }
     
 }
