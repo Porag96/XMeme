@@ -43,19 +43,31 @@ public class AuthService {
         return AuthResponse.builder()
                 .token(jwtToken)
                 .build();
+
     }
 
     public AuthResponse login(LoginRequest loginRequest){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPass())
-        );
-        var user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        return AuthResponse.builder()
-                .token(jwtToken)
-                .build();
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPass())
+            );
+            var user = userRepository.findByEmail(loginRequest.getEmail())
+                    .orElseThrow();
+            var jwtToken = jwtService.generateToken(user);
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        }
+        catch (Exception e){
+            return AuthResponse.builder()
+                    .token(e.getMessage())
+                    .build();
+        }
+    }
+
+    public Boolean isUserExist(String email){
+        return userRepository.findByEmail(email).isPresent();
     }
 }

@@ -1,5 +1,6 @@
 package com.crio.xmeme.controller;
 
+import com.crio.xmeme.exceptions.CustomException;
 import com.crio.xmeme.exchange.AuthResponse;
 import com.crio.xmeme.exchange.LoginRequest;
 import com.crio.xmeme.exchange.RegisterRequest;
@@ -7,6 +8,7 @@ import com.crio.xmeme.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,14 +28,25 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(REGISTER_ENDPOINT)
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest){
         log.info("***register called***");
-        return ResponseEntity.ok(authService.register(registerRequest));
+        if(registerRequest.getFirstName()!=null && registerRequest.getLastName()!=null && registerRequest.getEmail()!=null
+            && registerRequest.getPass()!=null)
+            if(authService.isUserExist(registerRequest.getEmail()))
+                return new ResponseEntity<>(new CustomException("User already Exist.").getMessage(), HttpStatus.CONFLICT);
+            else
+                return ResponseEntity.ok(authService.register(registerRequest));
+        else
+            return new ResponseEntity<>(new CustomException("BAD REQUEST!!").getMessage(), HttpStatus.BAD_REQUEST );
     }
 
     @PostMapping(LOGIN_ENDPOINT)
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
         log.info("***login called***");
-        return ResponseEntity.ok(authService.login(loginRequest));
+        var token = authService.login(loginRequest).getToken();
+        if(!token.equals("Bad credentials"))
+            return ResponseEntity.ok(AuthResponse.builder().token(token).build());
+        else
+            return new ResponseEntity<>(new CustomException("Invalid Email or Password").getMessage(), HttpStatus.BAD_REQUEST );
     }
 }
