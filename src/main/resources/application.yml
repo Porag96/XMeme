@@ -1,15 +1,4 @@
 spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId: Iv1.54687ca8675a6deb
-            clientSecret: 88bbd24efc972f29ce2f963fbd73c63ff968f8e9
-          google:
-            clientId: 332328471579-22cifm2je2na34nm95mcdc6csvvtpv7m.apps.googleusercontent.com
-            clientSecret: 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
-
   data:
     mongodb:
       uri: mongodb+srv://<username>:<password>@mycluster.fddepig.mongodb.net/<db-name>?retryWrites=true&w=majority
